@@ -85,17 +85,19 @@ window.addEventListener('scroll', () => {
 // =====================================
 const btnSubir = document.getElementById('subir');
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-        btnSubir.classList.add('visible');
-    } else {
-        btnSubir.classList.remove('visible');
-    }
-});
+if (btnSubir) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            btnSubir.classList.add('visible');
+        } else {
+            btnSubir.classList.remove('visible');
+        }
+    });
 
-btnSubir.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+    btnSubir.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
 // =====================================
 // ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS) - CORREGIDA
