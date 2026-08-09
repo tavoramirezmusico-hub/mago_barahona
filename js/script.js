@@ -335,6 +335,26 @@ document.addEventListener('mousemove', function (e) {
 });
 
 // =====================================
+// EFECTO DE PARALLAX EN EL LOGO
+// =====================================
+document.addEventListener('mousemove', function (e) {
+    const logo = document.querySelector('.logo');
+    if (!logo) return;
+
+    const rect = logo.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const deltaX = (e.clientX - centerX) / 20;
+    const deltaY = (e.clientY - centerY) / 20;
+
+    // Solo aplicar si no está en móvil
+    if (window.innerWidth > 768) {
+        logo.style.transform = `perspective(500px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg)`;
+    }
+});
+
+// =====================================
 // INICIALIZAR TODAS LAS MAGIAS
 // =====================================
 document.addEventListener('DOMContentLoaded', function () {
@@ -394,6 +414,7 @@ window.addEventListener('load', function () {
 });
 
 console.log('✨ ¡La magia está en el aire! ✨');
+
 // =====================================
 // ✨ MAGIA EXTRA: CURSOR DE VARITA MÁGICA
 // AURA, CHISPAS AL MOVER Y ESTALLIDO AL HACER CLIC
@@ -518,3 +539,51 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     console.log('✨ Partículas mágicas activas en todas las secciones');
 });
+
+// =====================================
+// ✨ EFECTO DE RESPLANDOR EN EL LOGO AL HACER CLICK
+// =====================================
+document.addEventListener('DOMContentLoaded', function () {
+    const logo = document.querySelector('.logo');
+    if (!logo) return;
+
+    logo.addEventListener('click', function (e) {
+        // Crear efecto de chispas alrededor del logo al hacer click
+        const rect = this.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const simbolos = ['✨', '✦', '✧', '⭐'];
+        const colores = ['#cc0000', '#ff1a1a', '#ffd700', '#ffffff'];
+
+        for (let i = 0; i < 12; i++) {
+            const spark = document.createElement('span');
+            spark.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+            spark.style.position = 'fixed';
+            spark.style.left = centerX + 'px';
+            spark.style.top = centerY + 'px';
+            spark.style.fontSize = (Math.random() * 12 + 8) + 'px';
+            spark.style.color = colores[Math.floor(Math.random() * colores.length)];
+            spark.style.pointerEvents = 'none';
+            spark.style.zIndex = '99999';
+            spark.style.transform = 'translate(-50%, -50%) scale(0)';
+            spark.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+
+            const angulo = (Math.PI * 2 * i) / 12 + Math.random() * 0.3;
+            const distancia = Math.random() * 60 + 40;
+
+            document.body.appendChild(spark);
+
+            requestAnimationFrame(() => {
+                spark.style.transform = `translate(${Math.cos(angulo) * distancia - 50}%, ${Math.sin(angulo) * distancia - 50}%) scale(1)`;
+                spark.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                spark.remove();
+            }, 700);
+        }
+    });
+});
+
+console.log('🎩✨ Todos los efectos mágicos activados - Mago Barahona');

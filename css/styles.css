@@ -396,7 +396,7 @@ a {
 }
 
 /* =====================================
-   NAV
+   NAV - CON LOGO MÁGICO
 ===================================== */
 nav {
     position: relative;
@@ -413,28 +413,111 @@ nav {
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     font-size: 1.3rem;
+    position: relative;
+    transition: var(--transition);
 }
 
-.logo-icon {
-    color: var(--color-rojo);
-    font-size: 1.6rem;
-    animation: girarEstrella 4s linear infinite;
+/* =====================================
+   LOGO IMAGEN - EFECTOS MÁGICOS ✨
+===================================== */
+.logo-img {
+    height: 45px;
+    width: auto;
+    display: block;
+    transition: var(--transition);
+    filter: drop-shadow(0 0 8px rgba(204, 0, 0, 0.3));
+    border-radius: 8px;
 }
 
-@keyframes girarEstrella {
+/* Efecto de brillo mágico al pasar el mouse */
+.logo:hover .logo-img {
+    filter: drop-shadow(0 0 25px rgba(204, 0, 0, 0.7)) drop-shadow(0 0 50px rgba(204, 0, 0, 0.3));
+    transform: scale(1.08) rotate(-2deg);
+}
+
+/* Animación de pulso suave en el logo (siempre activa) */
+.logo-img {
+    animation: logoPulsoMagico 3s ease-in-out infinite;
+}
+
+@keyframes logoPulsoMagico {
     0% {
-        transform: rotate(0deg) scale(1);
+        filter: drop-shadow(0 0 8px rgba(204, 0, 0, 0.3));
     }
 
     50% {
-        transform: rotate(180deg) scale(1.2);
+        filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.6)) drop-shadow(0 0 40px rgba(204, 0, 0, 0.2));
     }
 
     100% {
-        transform: rotate(360deg) scale(1);
+        filter: drop-shadow(0 0 8px rgba(204, 0, 0, 0.3));
     }
+}
+
+/* Efecto de brillo en el borde del logo al hacer hover */
+.logo::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--color-rojo), transparent, var(--color-rojo), transparent);
+    background-size: 300% 300%;
+    opacity: 0;
+    z-index: -1;
+    transition: var(--transition);
+}
+
+.logo:hover::after {
+    opacity: 0.6;
+    animation: bordeMagicoLogo 2s ease-in-out infinite;
+}
+
+@keyframes bordeMagicoLogo {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Efecto de chispas alrededor del logo al hacer hover */
+.logo:hover .logo-img {
+    animation: logoChispas 0.8s ease;
+}
+
+@keyframes logoChispas {
+    0% {
+        transform: scale(1.08) rotate(-2deg);
+    }
+
+    25% {
+        transform: scale(1.12) rotate(2deg);
+    }
+
+    50% {
+        transform: scale(1.06) rotate(-1deg);
+    }
+
+    75% {
+        transform: scale(1.10) rotate(1deg);
+    }
+
+    100% {
+        transform: scale(1.08) rotate(-2deg);
+    }
+}
+
+/* Estrella mágica decorativa en el logo (reemplazando el ícono anterior) */
+.logo-icon {
+    display: none;
 }
 
 .logo-text {
@@ -447,6 +530,28 @@ nav {
     font-weight: 700;
 }
 
+/* =====================================
+   LOGO EN EL FOOTER
+===================================== */
+.footer-logo .logo-img {
+    height: 40px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 10px rgba(204, 0, 0, 0.2));
+    transition: var(--transition);
+}
+
+.footer-logo .logo-img:hover {
+    filter: drop-shadow(0 0 25px rgba(204, 0, 0, 0.5));
+    transform: scale(1.05);
+}
+
+.footer-logo .logo-text {
+    font-size: 1.2rem;
+}
+
+/* =====================================
+   MENÚ
+===================================== */
 .menu-btn {
     display: none;
     background: none;
@@ -1289,6 +1394,11 @@ footer {
         max-width: 300px;
         margin: 0 auto;
     }
+
+    /* Logo responsive */
+    .logo-img {
+        height: 35px;
+    }
 }
 
 /* Móviles pequeños */
@@ -1395,6 +1505,15 @@ footer {
     .footer-bottom p {
         font-size: 0.7rem;
     }
+
+    /* Logo responsive móvil */
+    .logo-img {
+        height: 30px;
+    }
+
+    .logo-text {
+        font-size: 1rem;
+    }
 }
 
 /* Móviles muy pequeños (menos de 360px) */
@@ -1441,6 +1560,14 @@ footer {
     }
 
     .espectaculo-card p {
+        font-size: 0.85rem;
+    }
+
+    .logo-img {
+        height: 25px;
+    }
+
+    .logo-text {
         font-size: 0.85rem;
     }
 }
