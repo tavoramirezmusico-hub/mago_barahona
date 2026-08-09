@@ -100,7 +100,7 @@ if (btnSubir) {
 }
 
 // =====================================
-// ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS) - CORREGIDA
+// ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS)
 // =====================================
 function animarContadores() {
     const contadores = document.querySelectorAll('.stat-magico .numero');
@@ -113,7 +113,6 @@ function animarContadores() {
         const increment = target / steps;
         let animationStarted = false;
 
-        // Primero, aseguramos que el número empiece en 0
         contador.textContent = '0';
 
         const observer = new IntersectionObserver((entries) => {
@@ -124,7 +123,6 @@ function animarContadores() {
                     const intervalo = setInterval(() => {
                         counter += increment;
                         if (counter >= target) {
-                            // Mostrar el valor final con formato
                             if (target === 100) {
                                 contador.textContent = '100%';
                             } else {
@@ -132,7 +130,6 @@ function animarContadores() {
                             }
                             clearInterval(intervalo);
                         } else {
-                            // Mostrar el número actual
                             const valorActual = Math.floor(counter);
                             if (target === 100) {
                                 contador.textContent = valorActual + '%';
@@ -194,7 +191,6 @@ if (form) {
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Obtener valores del formulario
         const nombre = document.getElementById('nombre').value.trim();
         const email = document.getElementById('email').value.trim();
         const telefono = document.getElementById('telefono').value.trim();
@@ -202,16 +198,13 @@ if (form) {
         const tipoEvento = evento.options[evento.selectedIndex]?.text || 'No especificado';
         const mensaje = document.getElementById('mensaje').value.trim();
 
-        // Validar campos obligatorios
         if (!nombre || !email) {
             mostrarMensaje('⚠️ Por favor, completa los campos obligatorios (Nombre y Email).', 'error');
             return;
         }
 
-        // Número de WhatsApp (sin el +, solo el código de país y número)
         const numeroWhatsApp = '50660739309';
 
-        // Construir el mensaje
         let mensajeWhatsApp = `Hola Mago Barahona,%0A%0A`;
         mensajeWhatsApp += `Mi nombre es ${nombre}.%0A`;
         mensajeWhatsApp += `Mi correo electrónico es ${email}.%0A`;
@@ -228,22 +221,17 @@ if (form) {
             mensajeWhatsApp += `Me gustaría obtener más información sobre sus servicios.`;
         }
 
-        // Efecto mágico al enviar
         const btn = form.querySelector('.btn-magico');
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Abriendo WhatsApp...';
         btn.disabled = true;
 
-        // Pequeño retraso para mostrar el efecto
         setTimeout(() => {
-            // Abrir WhatsApp con el mensaje predefinido
             const url = `https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}`;
             window.open(url, '_blank');
 
-            // Restaurar el botón
             btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Enviar Mensaje <span class="chispa"></span>';
             btn.disabled = false;
 
-            // Mostrar mensaje de éxito
             mostrarMensaje('✅ ¡Redirigiendo a WhatsApp! Completa el mensaje y envíalo. ✨', 'success');
         }, 1000);
     });
@@ -335,36 +323,106 @@ document.addEventListener('mousemove', function (e) {
 });
 
 // =====================================
-// EFECTO DE PARALLAX EN EL LOGO
+// EFECTO DE PARALLAX 3D EN EL LOGO
 // =====================================
+let logoTimeout;
+let lastLogoX = 0;
+let lastLogoY = 0;
+
 document.addEventListener('mousemove', function (e) {
     const logo = document.querySelector('.logo');
     if (!logo) return;
+
+    // Solo en desktop
+    if (window.innerWidth <= 768) {
+        logo.style.transform = '';
+        return;
+    }
 
     const rect = logo.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    const deltaX = (e.clientX - centerX) / 20;
-    const deltaY = (e.clientY - centerY) / 20;
+    const deltaX = (e.clientX - centerX) / 25;
+    const deltaY = (e.clientY - centerY) / 25;
 
-    // Solo aplicar si no está en móvil
-    if (window.innerWidth > 768) {
-        logo.style.transform = `perspective(500px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg)`;
-    }
+    const maxRotate = 8;
+    const rotateX = Math.max(-maxRotate, Math.min(maxRotate, -deltaY));
+    const rotateY = Math.max(-maxRotate, Math.min(maxRotate, deltaX));
+
+    // Suavizar la transición
+    lastLogoX += (rotateY - lastLogoX) * 0.1;
+    lastLogoY += (rotateX - lastLogoY) * 0.1;
+
+    logo.style.transition = 'transform 0.1s ease-out';
+    logo.style.transform = `perspective(600px) rotateY(${lastLogoX}deg) rotateX(${lastLogoY}deg)`;
+
+    clearTimeout(logoTimeout);
+});
+
+document.addEventListener('mouseleave', function () {
+    const logo = document.querySelector('.logo');
+    if (!logo) return;
+
+    logoTimeout = setTimeout(() => {
+        logo.style.transition = 'transform 0.5s ease';
+        logo.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg)';
+        lastLogoX = 0;
+        lastLogoY = 0;
+    }, 300);
+});
+
+// =====================================
+// EFECTO DE CHISPAS AL HACER CLICK EN EL LOGO
+// =====================================
+document.addEventListener('DOMContentLoaded', function () {
+    const logo = document.querySelector('.logo');
+    if (!logo) return;
+
+    logo.addEventListener('click', function (e) {
+        const rect = this.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const simbolos = ['✨', '✦', '✧', '⭐', '🌟'];
+        const colores = ['#cc0000', '#ff1a1a', '#ffd700', '#ffffff', '#ff6600'];
+
+        for (let i = 0; i < 14; i++) {
+            const spark = document.createElement('span');
+            spark.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+            spark.style.position = 'fixed';
+            spark.style.left = centerX + 'px';
+            spark.style.top = centerY + 'px';
+            spark.style.fontSize = (Math.random() * 14 + 8) + 'px';
+            spark.style.color = colores[Math.floor(Math.random() * colores.length)];
+            spark.style.pointerEvents = 'none';
+            spark.style.zIndex = '99999';
+            spark.style.transform = 'translate(-50%, -50%) scale(0)';
+            spark.style.transition = 'all 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
+
+            const angulo = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
+            const distancia = Math.random() * 80 + 50;
+
+            document.body.appendChild(spark);
+
+            requestAnimationFrame(() => {
+                spark.style.transform = `translate(${Math.cos(angulo) * distancia - 50}%, ${Math.sin(angulo) * distancia - 50}%) scale(1)`;
+                spark.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                spark.remove();
+            }, 800);
+        }
+    });
 });
 
 // =====================================
 // INICIALIZAR TODAS LAS MAGIAS
 // =====================================
 document.addEventListener('DOMContentLoaded', function () {
-    // 1. Crear partículas
     crearParticulas();
-
-    // 2. Animar contadores - SE INICIALIZA CORRECTAMENTE
     animarContadores();
-
-    // 3. Efecto de brillo en título
     efectoBrilloTitulo();
 
     console.log('🎩✨ Magia cargada correctamente - Mago Barahona');
@@ -423,7 +481,6 @@ console.log('✨ ¡La magia está en el aire! ✨');
     const esTactil = window.matchMedia('(pointer: coarse)').matches;
     const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // En móviles/tablets o si el usuario prefiere menos movimiento, no activamos estos efectos
     if (esTactil || prefiereMenosMovimiento) return;
 
     // --- Aura mágica que sigue suavemente al cursor ---
@@ -454,7 +511,7 @@ console.log('✨ ¡La magia está en el aire! ✨');
         mouseY = e.clientY;
 
         const ahora = Date.now();
-        if (ahora - ultimaChispa < 45) return; // limitar la cantidad de chispas
+        if (ahora - ultimaChispa < 45) return;
         ultimaChispa = ahora;
 
         const chispa = document.createElement('span');
@@ -469,7 +526,7 @@ console.log('✨ ¡La magia está en el aire! ✨');
         setTimeout(() => chispa.remove(), 900);
     });
 
-    // --- Estallido de chispas mágicas al hacer clic (efecto de varita) ---
+    // --- Estallido de chispas mágicas al hacer clic ---
     document.addEventListener('click', (e) => {
         const cantidad = 8;
         for (let i = 0; i < cantidad; i++) {
@@ -496,7 +553,6 @@ console.log('🪄✨ Cursor de varita mágica activado - Mago Barahona');
 
 // =====================================
 // ✨ MAGIA EXTRA: PARTÍCULAS FLOTANTES EN TODAS LAS SECCIONES
-// Para que ningún fondo se quede "vacío" de magia
 // =====================================
 function crearParticulasEnSecciones() {
     const secciones = document.querySelectorAll('.sobre, .espectaculos, .galeria, .contacto, footer');
@@ -538,52 +594,6 @@ document.addEventListener('DOMContentLoaded', function () {
         crearParticulasEnSecciones();
     }
     console.log('✨ Partículas mágicas activas en todas las secciones');
-});
-
-// =====================================
-// ✨ EFECTO DE RESPLANDOR EN EL LOGO AL HACER CLICK
-// =====================================
-document.addEventListener('DOMContentLoaded', function () {
-    const logo = document.querySelector('.logo');
-    if (!logo) return;
-
-    logo.addEventListener('click', function (e) {
-        // Crear efecto de chispas alrededor del logo al hacer click
-        const rect = this.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const simbolos = ['✨', '✦', '✧', '⭐'];
-        const colores = ['#cc0000', '#ff1a1a', '#ffd700', '#ffffff'];
-
-        for (let i = 0; i < 12; i++) {
-            const spark = document.createElement('span');
-            spark.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
-            spark.style.position = 'fixed';
-            spark.style.left = centerX + 'px';
-            spark.style.top = centerY + 'px';
-            spark.style.fontSize = (Math.random() * 12 + 8) + 'px';
-            spark.style.color = colores[Math.floor(Math.random() * colores.length)];
-            spark.style.pointerEvents = 'none';
-            spark.style.zIndex = '99999';
-            spark.style.transform = 'translate(-50%, -50%) scale(0)';
-            spark.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-
-            const angulo = (Math.PI * 2 * i) / 12 + Math.random() * 0.3;
-            const distancia = Math.random() * 60 + 40;
-
-            document.body.appendChild(spark);
-
-            requestAnimationFrame(() => {
-                spark.style.transform = `translate(${Math.cos(angulo) * distancia - 50}%, ${Math.sin(angulo) * distancia - 50}%) scale(1)`;
-                spark.style.opacity = '0';
-            });
-
-            setTimeout(() => {
-                spark.remove();
-            }, 700);
-        }
-    });
 });
 
 console.log('🎩✨ Todos los efectos mágicos activados - Mago Barahona');
