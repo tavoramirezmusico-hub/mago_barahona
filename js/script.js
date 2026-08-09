@@ -98,7 +98,7 @@ btnSubir.addEventListener('click', () => {
 });
 
 // =====================================
-// ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS)
+// ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS) - CORREGIDA
 // =====================================
 function animarContadores() {
     const contadores = document.querySelectorAll('.stat-magico .numero');
@@ -109,25 +109,40 @@ function animarContadores() {
         const steps = 60;
         const stepTime = duration / steps;
         const increment = target / steps;
-        let current = 0;
+        let animationStarted = false;
+
+        // Primero, aseguramos que el número empiece en 0
+        contador.textContent = '0';
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !animationStarted) {
+                    animationStarted = true;
                     let counter = 0;
                     const intervalo = setInterval(() => {
                         counter += increment;
                         if (counter >= target) {
-                            contador.textContent = target + (target === 100 ? '%' : '+');
+                            // Mostrar el valor final con formato
+                            if (target === 100) {
+                                contador.textContent = '100%';
+                            } else {
+                                contador.textContent = target + '+';
+                            }
                             clearInterval(intervalo);
                         } else {
-                            contador.textContent = Math.floor(counter) + (target === 100 ? '%' : '');
+                            // Mostrar el número actual
+                            const valorActual = Math.floor(counter);
+                            if (target === 100) {
+                                contador.textContent = valorActual + '%';
+                            } else {
+                                contador.textContent = valorActual;
+                            }
                         }
                     }, stepTime);
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.3 });
 
         observer.observe(contador);
     });
@@ -228,13 +243,6 @@ if (form) {
 
             // Mostrar mensaje de éxito
             mostrarMensaje('✅ ¡Redirigiendo a WhatsApp! Completa el mensaje y envíalo. ✨', 'success');
-
-            // Opcional: limpiar el formulario después de un tiempo
-            setTimeout(() => {
-                // No limpiamos automáticamente para que el usuario pueda ver lo que escribió
-                // Pero podemos limpiar después de unos segundos si lo prefieres
-                // form.reset();
-            }, 1000);
         }, 1000);
     });
 }
@@ -250,13 +258,12 @@ function mostrarMensaje(texto, tipo) {
 }
 
 // =====================================
-// EFECTO DE TIPEO MÁGICO EN EL TÍTULO
+// EFECTO DE BRILLO MÁGICO EN EL TÍTULO
 // =====================================
 function efectoBrilloTitulo() {
     const titulo = document.querySelector('.titulo-magico');
     if (!titulo) return;
 
-    // Pequeño efecto de brillo continuo
     setInterval(() => {
         titulo.style.textShadow = '0 0 60px rgba(204, 0, 0, 0.5)';
         setTimeout(() => {
@@ -268,9 +275,8 @@ function efectoBrilloTitulo() {
 // =====================================
 // EFECTO DE REVELADO EN GALERÍA FLIP
 // =====================================
-document.querySelectorAll('.flip-card').forEach((card, index) => {
+document.querySelectorAll('.flip-card').forEach((card) => {
     card.addEventListener('click', function () {
-        // Pequeña vibración mágica al hacer clic
         this.style.transition = 'transform 0.1s';
         this.style.transform = 'scale(0.95)';
         setTimeout(() => {
@@ -280,11 +286,10 @@ document.querySelectorAll('.flip-card').forEach((card, index) => {
 });
 
 // =====================================
-// EFECTO DE "SOPLO" EN LOS BOTONES
+// EFECTO DE "CHISPA" EN LOS BOTONES
 // =====================================
 document.querySelectorAll('.btn-magico').forEach(btn => {
     btn.addEventListener('click', function (e) {
-        // Crear un efecto de chispa al hacer clic
         const chispa = document.createElement('span');
         chispa.style.position = 'absolute';
         chispa.style.left = e.clientX - this.getBoundingClientRect().left + 'px';
@@ -334,8 +339,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // 1. Crear partículas
     crearParticulas();
 
-    // 2. Animar contadores
-    setTimeout(animarContadores, 500);
+    // 2. Animar contadores - SE INICIALIZA CORRECTAMENTE
+    animarContadores();
 
     // 3. Efecto de brillo en título
     efectoBrilloTitulo();
@@ -363,30 +368,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // =====================================
-// DETECTAR CUANDO EL USUARIO ESTÁ INACTIVO
-// =====================================
-let tiempoInactivo = 0;
-
-setInterval(() => {
-    tiempoInactivo++;
-    if (tiempoInactivo > 30) {
-        // Si está inactivo por mucho tiempo, no hacer nada especial
-    }
-}, 1000);
-
-document.addEventListener('mousemove', () => {
-    tiempoInactivo = 0;
-});
-
-document.addEventListener('keydown', () => {
-    tiempoInactivo = 0;
-});
-
-// =====================================
 // EFECTO DE APARICIÓN MÁGICA AL RECARGAR
 // =====================================
 window.addEventListener('load', function () {
-    // Pequeño destello al cargar
     const hero = document.querySelector('.hero');
     if (hero) {
         const flash = document.createElement('div');
