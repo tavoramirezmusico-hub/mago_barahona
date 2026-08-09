@@ -472,3 +472,49 @@ console.log('✨ ¡La magia está en el aire! ✨');
 })();
 
 console.log('🪄✨ Cursor de varita mágica activado - Mago Barahona');
+
+// =====================================
+// ✨ MAGIA EXTRA: PARTÍCULAS FLOTANTES EN TODAS LAS SECCIONES
+// Para que ningún fondo se quede "vacío" de magia
+// =====================================
+function crearParticulasEnSecciones() {
+    const secciones = document.querySelectorAll('.sobre, .espectaculos, .galeria, .contacto, footer');
+    const colores = ['#cc0000', '#ff1a1a', '#ffffff', '#ff6600', '#cc0033'];
+    const cantidadPorSeccion = window.innerWidth < 600 ? 8 : 16;
+
+    secciones.forEach(seccion => {
+        const contenedorParticulas = document.createElement('div');
+        contenedorParticulas.className = 'magia-particulas-seccion';
+
+        for (let i = 0; i < cantidadPorSeccion; i++) {
+            const particula = document.createElement('div');
+            particula.className = 'particula';
+
+            const size = Math.random() * 3 + 1.5;
+            const x = Math.random() * 100;
+            const duracion = Math.random() * 18 + 14;
+            const delay = Math.random() * 18;
+            const color = colores[Math.floor(Math.random() * colores.length)];
+
+            particula.style.width = size + 'px';
+            particula.style.height = size + 'px';
+            particula.style.left = x + '%';
+            particula.style.background = color;
+            particula.style.animationDuration = duracion + 's';
+            particula.style.animationDelay = delay + 's';
+            particula.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+
+            contenedorParticulas.appendChild(particula);
+        }
+
+        seccion.insertBefore(contenedorParticulas, seccion.firstChild);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefiereMenosMovimiento) {
+        crearParticulasEnSecciones();
+    }
+    console.log('✨ Partículas mágicas activas en todas las secciones');
+});
