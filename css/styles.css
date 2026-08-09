@@ -1,5 +1,5 @@
 /* =====================================
-   MAGO BARAHONA
+   MAGO BARAHONA - ESTILOS MÁGICOS
    PALETA: ROJO · BLANCO · NEGRO
 ===================================== */
 
@@ -111,7 +111,7 @@ a {
 }
 
 /* =====================================
-   BOTONES
+   BOTONES CON CHISPA MÁGICA
 ===================================== */
 .btn {
     display: inline-flex;
@@ -126,6 +126,8 @@ a {
     border: none;
     cursor: pointer;
     font-family: var(--font-texto);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-principal {
@@ -154,6 +156,80 @@ a {
 .btn-full {
     width: 100%;
     justify-content: center;
+}
+
+/* === CHISPA MÁGICA EN BOTONES === */
+.btn-magico {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-magico .chispa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    pointer-events: none;
+}
+
+.btn-magico:hover .chispa {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+}
+
+.btn-magico:active .chispa {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+    transition: width 0.1s, height 0.1s;
+}
+
+/* =====================================
+   PARTÍCULAS MÁGICAS
+===================================== */
+.particulas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particula {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--color-rojo);
+    border-radius: 50%;
+    opacity: 0;
+    animation: flotarMagia linear infinite;
+    box-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+}
+
+@keyframes flotarMagia {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0) rotate(0deg);
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10vh) scale(1) rotate(720deg);
+    }
 }
 
 /* =====================================
@@ -202,6 +278,21 @@ nav {
 .logo-icon {
     color: var(--color-rojo);
     font-size: 1.6rem;
+    animation: girarEstrella 4s linear infinite;
+}
+
+@keyframes girarEstrella {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
 }
 
 .logo-text {
@@ -260,6 +351,34 @@ nav {
 }
 
 /* =====================================
+   TÍTULO MÁGICO (efecto brillo)
+===================================== */
+.titulo-magico {
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: brilloMagico 3s ease-in-out infinite;
+    text-shadow: 0 0 40px rgba(204, 0, 0, 0.3);
+}
+
+@keyframes brilloMagico {
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+/* =====================================
    HERO CONTENIDO
 ===================================== */
 .hero-contenido {
@@ -280,6 +399,19 @@ nav {
     font-weight: 600;
     letter-spacing: 4px;
     text-transform: uppercase;
+    animation: aparecerEtiqueta 1.5s ease;
+}
+
+@keyframes aparecerEtiqueta {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero-contenido h1 {
@@ -295,11 +427,24 @@ nav {
     color: var(--color-rojo);
 }
 
-.hero-contenido p {
+.hero-subtitulo {
     font-size: 1.3rem;
     color: var(--color-gris-claro);
     max-width: 600px;
     margin-bottom: 35px;
+    animation: aparecerSubtitulo 1.8s ease;
+}
+
+@keyframes aparecerSubtitulo {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero-botones {
@@ -307,6 +452,19 @@ nav {
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
+    animation: aparecerBotones 2s ease;
+}
+
+@keyframes aparecerBotones {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* =====================================
@@ -417,6 +575,13 @@ nav {
     background: var(--color-negro);
     border-radius: var(--radius);
     border: 1px solid rgba(204, 0, 0, 0.15);
+    transition: var(--transition);
+}
+
+.stat-magico:hover {
+    border-color: var(--color-rojo);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(204, 0, 0, 0.15);
 }
 
 .sobre-stats .stat .numero {
@@ -433,7 +598,7 @@ nav {
 }
 
 /* =====================================
-   ESPECTÁCULOS
+   ESPECTÁCULOS - TARJETAS MÁGICAS
 ===================================== */
 .espectaculos {
     padding: 100px 0;
@@ -454,10 +619,27 @@ nav {
     text-align: center;
     transition: var(--transition);
     position: relative;
+    overflow: hidden;
+}
+
+.espectaculo-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(204, 0, 0, 0.03), transparent 70%);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.espectaculo-card:hover::before {
+    opacity: 1;
 }
 
 .espectaculo-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px);
     border-color: rgba(204, 0, 0, 0.3);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
@@ -484,6 +666,7 @@ nav {
 .card-icon {
     font-size: 2.8rem;
     margin-bottom: 15px;
+    display: block;
 }
 
 .espectaculo-card h3 {
@@ -508,7 +691,7 @@ nav {
 }
 
 /* =====================================
-   GALERÍA
+   GALERÍA - EFECTO FLIP MÁGICO
 ===================================== */
 .galeria {
     padding: 100px 0;
@@ -521,36 +704,69 @@ nav {
     gap: 20px;
 }
 
-.galeria-item {
+.flip-card {
+    perspective: 1000px;
     aspect-ratio: 1;
     border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--color-negro);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: var(--transition);
+    cursor: pointer;
 }
 
-.galeria-item:hover {
-    transform: scale(1.02);
-    border-color: rgba(204, 0, 0, 0.3);
-}
-
-.galeria-placeholder {
+.flip-inner {
+    position: relative;
     width: 100%;
     height: 100%;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: var(--color-gris-claro);
-    font-size: 0.8rem;
 }
 
-.galeria-placeholder i {
+.flip-front {
+    background: var(--color-negro);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--color-gris-claro);
+}
+
+.flip-front i {
     font-size: 3rem;
     color: var(--color-rojo);
     opacity: 0.3;
+}
+
+.flip-front span {
+    font-size: 0.8rem;
+}
+
+.flip-back {
+    background: var(--color-rojo);
+    transform: rotateY(180deg);
+    color: var(--color-blanco);
+}
+
+.flip-back i {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.flip-back span {
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 /* =====================================
@@ -597,6 +813,11 @@ nav {
     display: flex;
     align-items: center;
     gap: 16px;
+    transition: var(--transition);
+}
+
+.detalle-magico:hover {
+    transform: translateX(5px);
 }
 
 .contacto-detalles .detalle i {
@@ -610,6 +831,12 @@ nav {
     color: var(--color-rojo);
     font-size: 1rem;
     flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.detalle-magico:hover i {
+    background: var(--color-rojo);
+    color: var(--color-blanco);
 }
 
 .contacto-detalles .detalle strong {
@@ -640,13 +867,18 @@ nav {
     transition: var(--transition);
 }
 
-.contacto-redes a:hover {
+.red-social {
+    transition: var(--transition);
+}
+
+.red-social:hover {
     background: var(--color-rojo);
-    transform: translateY(-3px);
+    transform: translateY(-5px) rotate(10deg);
+    box-shadow: 0 10px 30px rgba(204, 0, 0, 0.3);
 }
 
 /* =====================================
-   FORMULARIO
+   FORMULARIO MÁGICO
 ===================================== */
 .contacto-formulario {
     background: var(--color-gris);
@@ -673,11 +905,12 @@ nav {
     transition: var(--transition);
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.form-magico input:focus,
+.form-magico select:focus,
+.form-magico textarea:focus {
     outline: none;
     border-color: var(--color-rojo);
+    box-shadow: 0 0 20px rgba(204, 0, 0, 0.1);
 }
 
 .form-group select option {
@@ -749,6 +982,7 @@ footer {
 
 .footer-links a:hover {
     color: var(--color-rojo);
+    transform: translateX(5px);
 }
 
 .footer-social {
@@ -820,7 +1054,7 @@ footer {
 }
 
 .btn-subir:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) rotate(360deg);
     box-shadow: 0 10px 40px rgba(204, 0, 0, 0.4);
 }
 
@@ -928,5 +1162,9 @@ footer {
 
     .contacto-detalles .detalle {
         flex-wrap: wrap;
+    }
+
+    .flip-back span {
+        font-size: 0.7rem;
     }
 }

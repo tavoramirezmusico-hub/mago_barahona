@@ -1,7 +1,39 @@
 // =====================================
-// MAGO BARAHONA
-// SCRIPT PRINCIPAL
+// MAGO BARAHONA - SCRIPT MÁGICO
+// ILUSIONISMO · MAGIA · ANIMACIONES
 // =====================================
+
+// =====================================
+// PARTÍCULAS MÁGICAS (estrellas flotantes)
+// =====================================
+function crearParticulas() {
+    const contenedor = document.getElementById('particulas');
+    if (!contenedor) return;
+
+    const colores = ['#cc0000', '#ff1a1a', '#ffffff', '#ff6600', '#cc0033'];
+    const cantidad = 40;
+
+    for (let i = 0; i < cantidad; i++) {
+        const particula = document.createElement('div');
+        particula.className = 'particula';
+
+        const size = Math.random() * 4 + 2;
+        const x = Math.random() * 100;
+        const duracion = Math.random() * 15 + 10;
+        const delay = Math.random() * 15;
+        const color = colores[Math.floor(Math.random() * colores.length)];
+
+        particula.style.width = size + 'px';
+        particula.style.height = size + 'px';
+        particula.style.left = x + '%';
+        particula.style.background = color;
+        particula.style.animationDuration = duracion + 's';
+        particula.style.animationDelay = delay + 's';
+        particula.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+
+        contenedor.appendChild(particula);
+    }
+}
 
 // =====================================
 // MENÚ HAMBURGUESA
@@ -17,7 +49,6 @@ if (menuBtn && menu) {
             : '<i class="fa-solid fa-bars"></i>';
     });
 
-    // Cerrar menú al hacer clic en un enlace
     document.querySelectorAll('.menu a').forEach(enlace => {
         enlace.addEventListener('click', () => {
             menu.classList.remove('active');
@@ -50,7 +81,7 @@ window.addEventListener('scroll', () => {
 });
 
 // =====================================
-// BOTÓN SUBIR
+// BOTÓN SUBIR CON EFECTO MÁGICO
 // =====================================
 const btnSubir = document.getElementById('subir');
 
@@ -67,28 +98,77 @@ btnSubir.addEventListener('click', () => {
 });
 
 // =====================================
+// ANIMACIÓN DE CONTADORES (NÚMEROS MÁGICOS)
+// =====================================
+function animarContadores() {
+    const contadores = document.querySelectorAll('.stat-magico .numero');
+
+    contadores.forEach(contador => {
+        const target = parseInt(contador.dataset.count);
+        const duration = 2000;
+        const steps = 60;
+        const stepTime = duration / steps;
+        const increment = target / steps;
+        let current = 0;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let counter = 0;
+                    const intervalo = setInterval(() => {
+                        counter += increment;
+                        if (counter >= target) {
+                            contador.textContent = target + (target === 100 ? '%' : '+');
+                            clearInterval(intervalo);
+                        } else {
+                            contador.textContent = Math.floor(counter) + (target === 100 ? '%' : '');
+                        }
+                    }, stepTime);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(contador);
+    });
+}
+
+// =====================================
 // ANIMACIONES AL HACER SCROLL
 // =====================================
-const elementos = document.querySelectorAll('.espectaculo-card, .galeria-item, .sobre-texto');
+const elementosMagicos = document.querySelectorAll(
+    '.espectaculo-card, .galeria-item, .sobre-texto, .contacto-info, .contacto-formulario'
+);
 
-const observer = new IntersectionObserver((entries) => {
+const observerMagico = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            entry.target.style.filter = 'blur(0)';
         }
     });
 }, { threshold: 0.15 });
 
-elementos.forEach(el => {
+elementosMagicos.forEach((el, index) => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
-    observer.observe(el);
+    el.style.transform = 'translateY(40px)';
+    el.style.filter = 'blur(4px)';
+    el.style.transition = `all 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${index * 0.1}s`;
+    observerMagico.observe(el);
 });
 
 // =====================================
-// FORMULARIO DE CONTACTO
+// EFECTO DE APARICIÓN MÁGICA EN TARJETAS (hover)
+// =====================================
+document.querySelectorAll('.espectaculo-card').forEach(card => {
+    card.addEventListener('mouseenter', function () {
+        this.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    });
+});
+
+// =====================================
+// FORMULARIO DE CONTACTO CON MAGIA
 // =====================================
 const form = document.getElementById('contactForm');
 const formMensaje = document.getElementById('formMensaje');
@@ -106,9 +186,17 @@ if (form) {
             return;
         }
 
-        // Aquí iría la lógica para enviar el correo
-        mostrarMensaje('✅ ¡Mensaje enviado! Te contactaré pronto.', 'success');
-        form.reset();
+        // Efecto mágico al enviar
+        const btn = form.querySelector('.btn-magico');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            mostrarMensaje('✅ ¡Mensaje enviado con éxito! Te contactaré pronto. ✨', 'success');
+            form.reset();
+            btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Enviar Mensaje <span class="chispa"></span>';
+            btn.disabled = false;
+        }, 1500);
     });
 }
 
@@ -123,17 +211,161 @@ function mostrarMensaje(texto, tipo) {
 }
 
 // =====================================
-// EFECTO DE TIPEO EN EL TÍTULO
+// EFECTO DE TIPEO MÁGICO EN EL TÍTULO
 // =====================================
-const tituloHero = document.querySelector('.hero-contenido h1 span');
-if (tituloHero) {
-    const textoOriginal = tituloHero.textContent;
-    let index = 0;
-    let escribiendo = true;
+function efectoBrilloTitulo() {
+    const titulo = document.querySelector('.titulo-magico');
+    if (!titulo) return;
 
-    // No implementamos tipeo automático para no saturar, pero dejamos el efecto visual
-    tituloHero.style.display = 'inline-block';
-    tituloHero.style.transition = 'all 0.3s ease';
+    // Pequeño efecto de brillo continuo
+    setInterval(() => {
+        titulo.style.textShadow = '0 0 60px rgba(204, 0, 0, 0.5)';
+        setTimeout(() => {
+            titulo.style.textShadow = '0 0 20px rgba(204, 0, 0, 0.2)';
+        }, 300);
+    }, 3000);
 }
 
-console.log('🎩 Mago Barahona - Sitio oficial cargado correctamente.');
+// =====================================
+// EFECTO DE REVELADO EN GALERÍA FLIP
+// =====================================
+document.querySelectorAll('.flip-card').forEach((card, index) => {
+    card.addEventListener('click', function () {
+        // Pequeña vibración mágica al hacer clic
+        this.style.transition = 'transform 0.1s';
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 100);
+    });
+});
+
+// =====================================
+// EFECTO DE "SOPLO" EN LOS BOTONES
+// =====================================
+document.querySelectorAll('.btn-magico').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+        // Crear un efecto de chispa al hacer clic
+        const chispa = document.createElement('span');
+        chispa.style.position = 'absolute';
+        chispa.style.left = e.clientX - this.getBoundingClientRect().left + 'px';
+        chispa.style.top = e.clientY - this.getBoundingClientRect().top + 'px';
+        chispa.style.width = '20px';
+        chispa.style.height = '20px';
+        chispa.style.background = 'rgba(255,255,255,0.6)';
+        chispa.style.borderRadius = '50%';
+        chispa.style.pointerEvents = 'none';
+        chispa.style.transform = 'scale(0)';
+        chispa.style.transition = 'all 0.5s ease';
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(chispa);
+
+        setTimeout(() => {
+            chispa.style.transform = 'scale(4)';
+            chispa.style.opacity = '0';
+        }, 10);
+
+        setTimeout(() => {
+            chispa.remove();
+        }, 600);
+    });
+});
+
+// =====================================
+// EFECTO DE PARALLAX EN EL HERO
+// =====================================
+document.addEventListener('mousemove', function (e) {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+    const overlay = hero.querySelector('.hero-overlay');
+    if (overlay) {
+        overlay.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    }
+});
+
+// =====================================
+// INICIALIZAR TODAS LAS MAGIAS
+// =====================================
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Crear partículas
+    crearParticulas();
+
+    // 2. Animar contadores
+    setTimeout(animarContadores, 500);
+
+    // 3. Efecto de brillo en título
+    efectoBrilloTitulo();
+
+    console.log('🎩✨ Magia cargada correctamente - Mago Barahona');
+});
+
+// =====================================
+// EFECTO DE TRANSICIÓN ENTRE SECCIONES
+// =====================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// =====================================
+// DETECTAR CUANDO EL USUARIO ESTÁ INACTIVO
+// =====================================
+let tiempoInactivo = 0;
+
+setInterval(() => {
+    tiempoInactivo++;
+    if (tiempoInactivo > 30) {
+        // Si está inactivo por mucho tiempo, no hacer nada especial
+    }
+}, 1000);
+
+document.addEventListener('mousemove', () => {
+    tiempoInactivo = 0;
+});
+
+document.addEventListener('keydown', () => {
+    tiempoInactivo = 0;
+});
+
+// =====================================
+// EFECTO DE APARICIÓN MÁGICA AL RECARGAR
+// =====================================
+window.addEventListener('load', function () {
+    // Pequeño destello al cargar
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        const flash = document.createElement('div');
+        flash.style.position = 'fixed';
+        flash.style.inset = '0';
+        flash.style.background = 'rgba(204, 0, 0, 0.1)';
+        flash.style.pointerEvents = 'none';
+        flash.style.zIndex = '99999';
+        flash.style.transition = 'opacity 0.5s ease';
+        document.body.appendChild(flash);
+
+        setTimeout(() => {
+            flash.style.opacity = '0';
+            setTimeout(() => {
+                flash.remove();
+            }, 500);
+        }, 300);
+    }
+});
+
+console.log('✨ ¡La magia está en el aire! ✨');

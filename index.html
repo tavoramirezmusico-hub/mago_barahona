@@ -19,7 +19,6 @@
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <!-- META TAGS -->
     <meta name="description"
         content="Mago Barahona - Ilusionismo y magia en vivo. Espectáculos de magia para eventos, fiestas y shows privados.">
     <meta name="robots" content="index, follow">
@@ -39,6 +38,7 @@
     ===================================== -->
     <section class="hero" id="inicio">
         <div class="hero-overlay"></div>
+        <div class="particulas" id="particulas"></div>
 
         <nav>
             <a href="#inicio" class="logo">
@@ -59,11 +59,12 @@
 
         <div class="hero-contenido">
             <span class="hero-etiqueta">✦ Ilusionismo ✦</span>
-            <h1>Mago <span>Barahona</span></h1>
-            <p>Donde la realidad se desvanece y la magia cobra vida.</p>
+            <h1>Mago <span class="titulo-magico">Barahona</span></h1>
+            <p class="hero-subtitulo">Donde la realidad se desvanece y la magia cobra vida.</p>
             <div class="hero-botones">
-                <a href="#contacto" class="btn btn-principal">
+                <a href="#contacto" class="btn btn-principal btn-magico">
                     <i class="fa-regular fa-calendar"></i> Reservar Ahora
+                    <span class="chispa"></span>
                 </a>
                 <a href="#espectaculos" class="btn btn-secundario">
                     Ver Espectáculos
@@ -105,17 +106,17 @@
                         dejar una huella imborrable en el corazón de cada espectador.
                     </p>
                     <div class="sobre-stats">
-                        <div class="stat">
-                            <span class="numero">10+</span>
+                        <div class="stat stat-magico">
+                            <span class="numero" data-count="10">0</span>
                             <span class="label">Años de experiencia</span>
                         </div>
-                        <div class="stat">
-                            <span class="numero">500+</span>
+                        <div class="stat stat-magico">
+                            <span class="numero" data-count="500">0</span>
                             <span class="label">Espectáculos realizados</span>
                         </div>
-                        <div class="stat">
-                            <span class="numero">100%</span>
-                            <span class="label">Garantía de asombro</span>
+                        <div class="stat stat-magico">
+                            <span class="numero" data-count="100">0</span>
+                            <span class="label">% de asombro garantizado</span>
                         </div>
                     </div>
                 </div>
@@ -135,7 +136,7 @@
             </div>
 
             <div class="espectaculos-grid">
-                <div class="espectaculo-card">
+                <div class="espectaculo-card card-magica">
                     <div class="card-icon">🎩</div>
                     <h3>Magia de Cerca</h3>
                     <p>Ilusionismo interactivo cara a cara. Perfecto para recepciones, cócteles y eventos íntimos donde
@@ -143,7 +144,7 @@
                     <span class="card-duracion">⏱ 30-60 min</span>
                 </div>
 
-                <div class="espectaculo-card destacado">
+                <div class="espectaculo-card card-magica destacado">
                     <div class="card-badge">✦ Destacado</div>
                     <div class="card-icon">🎭</div>
                     <h3>Show de Escenario</h3>
@@ -152,7 +153,7 @@
                     <span class="card-duracion">⏱ 45-90 min</span>
                 </div>
 
-                <div class="espectaculo-card">
+                <div class="espectaculo-card card-magica">
                     <div class="card-icon">✨</div>
                     <h3>Magia Corporativa</h3>
                     <p>Espectáculos diseñados para eventos empresariales, lanzamientos y galas. Elegancia y magia para
@@ -160,7 +161,7 @@
                     <span class="card-duracion">⏱ Personalizado</span>
                 </div>
 
-                <div class="espectaculo-card">
+                <div class="espectaculo-card card-magica">
                     <div class="card-icon">🎪</div>
                     <h3>Magia Infantil</h3>
                     <p>Show lleno de color, participación y diversión para los más pequeños. Magia que despierta la
@@ -168,7 +169,7 @@
                     <span class="card-duracion">⏱ 45-60 min</span>
                 </div>
 
-                <div class="espectaculo-card">
+                <div class="espectaculo-card card-magica">
                     <div class="card-icon">❤️</div>
                     <h3>Magia Romántica</h3>
                     <p>Experiencias mágicas para bodas, aniversarios y propuestas. Momentos inolvidables llenos de amor
@@ -176,7 +177,7 @@
                     <span class="card-duracion">⏱ Personalizado</span>
                 </div>
 
-                <div class="espectaculo-card">
+                <div class="espectaculo-card card-magica">
                     <div class="card-icon">🌟</div>
                     <h3>Eventos Especiales</h3>
                     <p>¿Tienes una idea única? Creamos un espectáculo a tu medida. La magia no tiene límites.</p>
@@ -187,7 +188,7 @@
     </section>
 
     <!-- =====================================
-         GALERÍA
+         GALERÍA - CON EFECTO FLIP
     ===================================== -->
     <section id="galeria" class="galeria">
         <div class="contenedor">
@@ -198,40 +199,76 @@
             </div>
 
             <div class="galeria-grid">
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 1</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 1</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Magia en acción</span>
+                        </div>
                     </div>
                 </div>
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 2</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 2</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Ilusión pura</span>
+                        </div>
                     </div>
                 </div>
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 3</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 3</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Asombro total</span>
+                        </div>
                     </div>
                 </div>
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 4</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 4</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Elegancia mágica</span>
+                        </div>
                     </div>
                 </div>
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 5</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 5</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Gran ilusión</span>
+                        </div>
                     </div>
                 </div>
-                <div class="galeria-item">
-                    <div class="galeria-placeholder">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Foto 6</span>
+                <div class="galeria-item flip-card">
+                    <div class="flip-inner">
+                        <div class="flip-front galeria-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Foto 6</span>
+                        </div>
+                        <div class="flip-back">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>✨ Magia sin límites</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,21 +290,21 @@
                     </p>
 
                     <div class="contacto-detalles">
-                        <div class="detalle">
+                        <div class="detalle detalle-magico">
                             <i class="fa-regular fa-envelope"></i>
                             <div>
                                 <strong>Email</strong>
                                 <span>magobarahona@email.com</span>
                             </div>
                         </div>
-                        <div class="detalle">
+                        <div class="detalle detalle-magico">
                             <i class="fa-regular fa-phone"></i>
                             <div>
                                 <strong>Teléfono</strong>
                                 <span>+506 8888-8888</span>
                             </div>
                         </div>
-                        <div class="detalle">
+                        <div class="detalle detalle-magico">
                             <i class="fa-regular fa-location-dot"></i>
                             <div>
                                 <strong>Ubicación</strong>
@@ -277,25 +314,25 @@
                     </div>
 
                     <div class="contacto-redes">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="red-social"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="red-social"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="red-social"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="red-social"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                 </div>
 
                 <div class="contacto-formulario">
                     <form id="contactForm">
-                        <div class="form-group">
+                        <div class="form-group form-magico">
                             <input type="text" id="nombre" placeholder="Tu nombre" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-magico">
                             <input type="email" id="email" placeholder="Tu correo electrónico" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-magico">
                             <input type="text" id="telefono" placeholder="Tu teléfono">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-magico">
                             <select id="evento">
                                 <option value="">Tipo de evento</option>
                                 <option value="magia_cerca">Magia de cerca</option>
@@ -306,11 +343,12 @@
                                 <option value="otro">Otro</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-magico">
                             <textarea id="mensaje" placeholder="Cuéntame sobre tu evento..." rows="4"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-principal btn-full">
+                        <button type="submit" class="btn btn-principal btn-full btn-magico">
                             <i class="fa-regular fa-paper-plane"></i> Enviar Mensaje
+                            <span class="chispa"></span>
                         </button>
                     </form>
                     <div id="formMensaje" class="form-mensaje"></div>
