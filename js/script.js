@@ -394,3 +394,81 @@ window.addEventListener('load', function () {
 });
 
 console.log('✨ ¡La magia está en el aire! ✨');
+// =====================================
+// ✨ MAGIA EXTRA: CURSOR DE VARITA MÁGICA
+// AURA, CHISPAS AL MOVER Y ESTALLIDO AL HACER CLIC
+// =====================================
+(function () {
+    const esTactil = window.matchMedia('(pointer: coarse)').matches;
+    const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // En móviles/tablets o si el usuario prefiere menos movimiento, no activamos estos efectos
+    if (esTactil || prefiereMenosMovimiento) return;
+
+    // --- Aura mágica que sigue suavemente al cursor ---
+    const aura = document.createElement('div');
+    aura.className = 'magia-cursor-aura';
+    document.body.appendChild(aura);
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let auraX = mouseX;
+    let auraY = mouseY;
+
+    function animarAura() {
+        auraX += (mouseX - auraX) * 0.15;
+        auraY += (mouseY - auraY) * 0.15;
+        aura.style.transform = `translate(${auraX}px, ${auraY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animarAura);
+    }
+    requestAnimationFrame(animarAura);
+
+    // --- Chispas que van dejando rastro al mover el mouse ---
+    const simbolosMagicos = ['✦', '✧', '✨', '⋆'];
+    const coloresMagicos = ['#cc0000', '#ff1a1a', '#ffffff', '#ff6600', '#ffd700'];
+    let ultimaChispa = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        const ahora = Date.now();
+        if (ahora - ultimaChispa < 45) return; // limitar la cantidad de chispas
+        ultimaChispa = ahora;
+
+        const chispa = document.createElement('span');
+        chispa.className = 'magia-cursor-sparkle';
+        chispa.textContent = simbolosMagicos[Math.floor(Math.random() * simbolosMagicos.length)];
+        chispa.style.left = e.clientX + (Math.random() * 16 - 8) + 'px';
+        chispa.style.top = e.clientY + (Math.random() * 16 - 8) + 'px';
+        chispa.style.color = coloresMagicos[Math.floor(Math.random() * coloresMagicos.length)];
+        chispa.style.fontSize = (Math.random() * 8 + 8) + 'px';
+
+        document.body.appendChild(chispa);
+        setTimeout(() => chispa.remove(), 900);
+    });
+
+    // --- Estallido de chispas mágicas al hacer clic (efecto de varita) ---
+    document.addEventListener('click', (e) => {
+        const cantidad = 8;
+        for (let i = 0; i < cantidad; i++) {
+            const estrella = document.createElement('span');
+            estrella.className = 'magia-click-estrella';
+            estrella.textContent = simbolosMagicos[Math.floor(Math.random() * simbolosMagicos.length)];
+            estrella.style.left = e.clientX + 'px';
+            estrella.style.top = e.clientY + 'px';
+            estrella.style.color = coloresMagicos[Math.floor(Math.random() * coloresMagicos.length)];
+            estrella.style.fontSize = (Math.random() * 10 + 10) + 'px';
+
+            const angulo = (Math.PI * 2 * i) / cantidad + Math.random() * 0.5;
+            const distancia = Math.random() * 50 + 40;
+            estrella.style.setProperty('--tx', Math.cos(angulo) * distancia + 'px');
+            estrella.style.setProperty('--ty', Math.sin(angulo) * distancia + 'px');
+
+            document.body.appendChild(estrella);
+            setTimeout(() => estrella.remove(), 700);
+        }
+    });
+})();
+
+console.log('🪄✨ Cursor de varita mágica activado - Mago Barahona');
