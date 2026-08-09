@@ -168,7 +168,7 @@ document.querySelectorAll('.espectaculo-card').forEach(card => {
 });
 
 // =====================================
-// FORMULARIO DE CONTACTO CON MAGIA
+// FORMULARIO DE CONTACTO - ENVÍO A WHATSAPP
 // =====================================
 const form = document.getElementById('contactForm');
 const formMensaje = document.getElementById('formMensaje');
@@ -177,26 +177,65 @@ if (form) {
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
+        // Obtener valores del formulario
         const nombre = document.getElementById('nombre').value.trim();
         const email = document.getElementById('email').value.trim();
-        const evento = document.getElementById('evento').value;
+        const telefono = document.getElementById('telefono').value.trim();
+        const evento = document.getElementById('evento');
+        const tipoEvento = evento.options[evento.selectedIndex]?.text || 'No especificado';
+        const mensaje = document.getElementById('mensaje').value.trim();
 
+        // Validar campos obligatorios
         if (!nombre || !email) {
-            mostrarMensaje('⚠️ Por favor, completa los campos obligatorios.', 'error');
+            mostrarMensaje('⚠️ Por favor, completa los campos obligatorios (Nombre y Email).', 'error');
             return;
+        }
+
+        // Número de WhatsApp (sin el +, solo el código de país y número)
+        const numeroWhatsApp = '50660739309';
+
+        // Construir el mensaje
+        let mensajeWhatsApp = `Hola Mago Barahona,%0A%0A`;
+        mensajeWhatsApp += `Mi nombre es ${nombre}.%0A`;
+        mensajeWhatsApp += `Mi correo electrónico es ${email}.%0A`;
+
+        if (telefono) {
+            mensajeWhatsApp += `Mi teléfono es ${telefono}.%0A`;
+        }
+
+        mensajeWhatsApp += `%0AEstoy interesado en: ${tipoEvento}.%0A%0A`;
+
+        if (mensaje) {
+            mensajeWhatsApp += `Detalles del evento:%0A${mensaje}`;
+        } else {
+            mensajeWhatsApp += `Me gustaría obtener más información sobre sus servicios.`;
         }
 
         // Efecto mágico al enviar
         const btn = form.querySelector('.btn-magico');
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Abriendo WhatsApp...';
         btn.disabled = true;
 
+        // Pequeño retraso para mostrar el efecto
         setTimeout(() => {
-            mostrarMensaje('✅ ¡Mensaje enviado con éxito! Te contactaré pronto. ✨', 'success');
-            form.reset();
+            // Abrir WhatsApp con el mensaje predefinido
+            const url = `https://wa.me/${numeroWhatsApp}?text=${mensajeWhatsApp}`;
+            window.open(url, '_blank');
+
+            // Restaurar el botón
             btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Enviar Mensaje <span class="chispa"></span>';
             btn.disabled = false;
-        }, 1500);
+
+            // Mostrar mensaje de éxito
+            mostrarMensaje('✅ ¡Redirigiendo a WhatsApp! Completa el mensaje y envíalo. ✨', 'success');
+
+            // Opcional: limpiar el formulario después de un tiempo
+            setTimeout(() => {
+                // No limpiamos automáticamente para que el usuario pueda ver lo que escribió
+                // Pero podemos limpiar después de unos segundos si lo prefieres
+                // form.reset();
+            }, 1000);
+        }, 1000);
     });
 }
 
