@@ -233,7 +233,7 @@ a {
 }
 
 /* =====================================
-   HERO
+   HERO - CON IMAGEN DE FONDO Y EFECTOS MÁGICOS
 ===================================== */
 .hero {
     min-height: 100vh;
@@ -241,6 +241,10 @@ a {
     display: flex;
     flex-direction: column;
     background: var(--color-negro);
+    background-image: url('../img/hero.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     overflow: hidden;
 }
 
@@ -248,9 +252,53 @@ a {
     position: absolute;
     inset: 0;
     background:
+        rgba(0, 0, 0, 0.45),
         radial-gradient(ellipse at 50% 30%, rgba(204, 0, 0, 0.15), transparent 70%),
         radial-gradient(ellipse at 80% 80%, rgba(204, 0, 0, 0.05), transparent 50%);
     z-index: 1;
+}
+
+/* Efecto de brillo mágico en el hero */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 30% 50%, rgba(204, 0, 0, 0.03), transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(204, 0, 0, 0.02), transparent 50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Efecto de destello en el hero (como si fuera magia) */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 100px,
+            rgba(204, 0, 0, 0.01) 100px,
+            rgba(204, 0, 0, 0.01) 101px),
+        repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 120px,
+            rgba(204, 0, 0, 0.01) 120px,
+            rgba(204, 0, 0, 0.01) 121px);
+    z-index: 1;
+    pointer-events: none;
+    animation: destelloMagico 20s linear infinite;
+}
+
+@keyframes destelloMagico {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+
+    100% {
+        transform: translateX(200px) translateY(100px);
+    }
 }
 
 /* =====================================
@@ -1107,40 +1155,13 @@ footer {
 }
 
 /* =====================================
-   RESPONSIVE
+   RESPONSIVE - MÓVIL (efecto parallax desactivado)
 ===================================== */
-@media (max-width: 992px) {
-
-    .sobre-grid,
-    .contacto-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .hero-contenido h1 {
-        font-size: 3.8rem;
-    }
-
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .footer-links {
-        align-items: center;
-    }
-
-    .footer-social {
-        justify-content: center;
-    }
-
-    .imagen-mago {
-        max-width: 350px;
-        margin: 0 auto;
-    }
-}
-
 @media (max-width: 768px) {
+    .hero {
+        background-attachment: scroll;
+    }
+
     .menu-btn {
         display: block;
     }
@@ -1177,6 +1198,12 @@ footer {
         font-size: 2.2rem;
     }
 
+    .sobre-grid,
+    .contacto-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
     .sobre-stats {
         grid-template-columns: 1fr;
     }
@@ -1198,13 +1225,27 @@ footer {
         justify-content: center;
     }
 
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-links {
+        align-items: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
     .footer-bottom {
         flex-direction: column;
         text-align: center;
     }
 
     .imagen-mago {
-        max-width: 300px;
+        max-width: 350px;
+        margin: 0 auto;
     }
 }
 
@@ -1227,5 +1268,36 @@ footer {
 
     .imagen-mago {
         max-width: 250px;
+    }
+}
+
+@media (max-width: 992px) {
+
+    .sobre-grid,
+    .contacto-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero-contenido h1 {
+        font-size: 3.8rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-links {
+        align-items: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .imagen-mago {
+        max-width: 350px;
+        margin: 0 auto;
     }
 }
